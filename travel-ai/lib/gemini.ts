@@ -264,14 +264,14 @@ function chatFallback(message: string, itinerary: Itinerary): { reply: string; u
   };
 }
 
-async function generateDemoItinerary(intent: TripIntent): Promise<Itinerary> {
+async function generateDemoItinerary(_intent: TripIntent): Promise<Itinerary> {
   // P3: Lazy-load seed data only in demo mode
   const { TOKYO_SAMPLE_TRIP } = await import('./seed-data');
   return {
-    ...TOKYO_SAMPLE_TRIP.itinerary,
+    ...(TOKYO_SAMPLE_TRIP.itinerary as Itinerary),
     id: `itin_${Date.now()}`,
     tripId: `trip_${Date.now()}`,
     generatedAt: new Date().toISOString(),
     lastUpdatedAt: new Date().toISOString(),
-  };
+  } as Itinerary;
 }

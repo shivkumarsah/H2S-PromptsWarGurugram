@@ -10,7 +10,8 @@ interface MapViewProps {
 }
 
 // P3: Build Google Maps Static API URL with activity markers
-function buildStaticMapUrl(activities: Trip['itinerary']['days'][0]['activities'], center: { lat: number; lng: number }): string | null {
+type Activity = NonNullable<Trip['itinerary']>['days'][0]['activities'][0];
+function buildStaticMapUrl(activities: Activity[], center: { lat: number; lng: number }): string | null {
   const apiKey = process.env.NEXT_PUBLIC_MAPS_API_KEY;
   if (!apiKey) return null;
 
