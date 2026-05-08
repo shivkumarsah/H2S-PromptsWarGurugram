@@ -7,13 +7,10 @@ import toast from 'react-hot-toast';
 
 export default function GoogleSignIn() {
   const [user, setUser] = useState<User | null>(null);
-  const [isInitializing, setIsInitializing] = useState(true);
+  const [isInitializing, setIsInitializing] = useState(!!auth);
 
   useEffect(() => {
-    if (!auth) {
-      setIsInitializing(false);
-      return;
-    }
+    if (!auth) return;
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       setIsInitializing(false);

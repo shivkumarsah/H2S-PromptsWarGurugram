@@ -1,4 +1,4 @@
-import { Trip, Itinerary, DayPlan, Activity, AlternativeActivity, WeatherInfo } from './types';
+import { Trip } from './types';
 
 // ================================================================
 // Seed Data — Sample trips & destinations for demo

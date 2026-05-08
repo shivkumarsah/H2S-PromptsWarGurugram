@@ -83,7 +83,6 @@ Return this exact JSON structure:
 function parseFallback(input: string): Partial<TripIntent> {
   const lower = input.toLowerCase();
   const budgetMatch = input.match(/\$[\d,]+/);
-  const daysMatch = input.match(/(\d+)[\s-]?day/i);
   const groupMatch = input.match(/(\d+)\s*(people|person|adults?|family)/i);
 
   return {
@@ -163,7 +162,7 @@ Return a complete Itinerary JSON object with all days, activities, costs, and me
     return JSON.parse(cleaned);
   } catch (err) {
     console.error('Gemini itinerary error, using demo:', err);
-    return generateDemoItinerary(intent);
+    return generateDemoItinerary();
   }
 }
 
@@ -264,7 +263,7 @@ function chatFallback(message: string, itinerary: Itinerary): { reply: string; u
   };
 }
 
-async function generateDemoItinerary(_intent: TripIntent): Promise<Itinerary> {
+async function generateDemoItinerary(): Promise<Itinerary> {
   // P3: Lazy-load seed data only in demo mode
   const { TOKYO_SAMPLE_TRIP } = await import('./seed-data');
   return {

@@ -2,26 +2,11 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import Image from 'next/image';
 import { Trip } from '@/lib/types';
 
 interface MapViewProps {
   trip: Trip;
 }
-
-// P3: Build Google Maps Static API URL with activity markers
-type Activity = NonNullable<Trip['itinerary']>['days'][0]['activities'][0];
-function buildStaticMapUrl(activities: Activity[], center: { lat: number; lng: number }): string | null {
-  const apiKey = process.env.NEXT_PUBLIC_MAPS_API_KEY;
-  if (!apiKey) return null;
-
-  const markers = activities
-    .map((act, i) => `markers=color:0x6366f1%7Clabel:${i + 1}%7C${act.location.coordinates.lat},${act.location.coordinates.lng}`)
-    .join('&');
-
-  return `https://maps.googleapis.com/maps/api/staticmap?center=${center.lat},${center.lng}&zoom=13&size=800x400&maptype=roadmap&${markers}&style=element:geometry%7Ccolor:0x242f3e&style=element:labels.text.stroke%7Ccolor:0x242f3e&style=element:labels.text.fill%7Ccolor:0x746855&key=${apiKey}`;
-}
-
 
 // Map view using embedded static maps (Google Maps embed in production)
 export default function MapView({ trip }: MapViewProps) {
@@ -32,14 +17,6 @@ export default function MapView({ trip }: MapViewProps) {
 
   const day = itinerary.days[selectedDay];
   const activities = day?.activities || [];
-
-  // Generate a static map URL using coordinates
-  const markers = activities
-    .map((act, i) => `markers=color:0x6366f1%7Clabel:${i + 1}%7C${act.location.coordinates.lat},${act.location.coordinates.lng}`)
-    .join('&');
-
-  // Center on the first activity
-  const center = activities[0]?.location.coordinates || { lat: 35.6762, lng: 139.6503 };
 
   return (
     <div className="flex h-full">

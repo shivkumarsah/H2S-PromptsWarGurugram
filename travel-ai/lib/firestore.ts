@@ -5,11 +5,12 @@
 
 import { Trip, Itinerary } from './types';
 import { logger } from './google-services';
+import type { Firestore, QueryDocumentSnapshot } from '@google-cloud/firestore';
 
 // ================================================================
 // Singleton Firestore instance
 // ================================================================
-let _firestore: any = null;
+let _firestore: Firestore | null = null;
 
 function getFirestore() {
   if (_firestore) return _firestore;
@@ -76,7 +77,7 @@ export const tripsDb = {
           .orderBy('updatedAt', 'desc')
           .limit(50)
           .get();
-        return snap.docs.map((d: any) => d.data() as Trip);
+        return snap.docs.map((d: QueryDocumentSnapshot) => d.data() as Trip);
       } catch (err) {
         logger.warn('Firestore list failed', { error: String(err) });
       }

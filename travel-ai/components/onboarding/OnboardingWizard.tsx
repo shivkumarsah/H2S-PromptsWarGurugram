@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useRouter } from 'next/navigation';
 import { useTravelStore } from '@/lib/store';
 import { INTEREST_OPTIONS, TRAVEL_STYLES_META, SAMPLE_DESTINATIONS } from '@/lib/seed-data';
 import { TravelStyle, PaceType } from '@/lib/types';
@@ -17,14 +16,12 @@ const STEPS: Step[] = ['nl-input', 'destination', 'dates', 'preferences', 'inter
 const STEP_LABELS = ['Quick Start', 'Destination', 'Dates & Budget', 'Preferences', 'Interests', 'Review'];
 
 export default function OnboardingWizard({ onClose }: OnboardingWizardProps) {
-  const router = useRouter();
   const { draftIntent, updateDraftIntent, resetDraftIntent, addTrip, setActiveTrip, setIsGenerating } = useTravelStore();
   const [stepIndex, setStepIndex] = useState(0);
   const [nlInput, setNlInput] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const currentStep = STEPS[stepIndex];
-  const progress = ((stepIndex) / (STEPS.length - 1)) * 100;
 
   const handleNext = () => {
     if (stepIndex < STEPS.length - 1) setStepIndex(i => i + 1);

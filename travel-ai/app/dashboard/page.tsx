@@ -25,16 +25,6 @@ function DashboardContent() {
   const [isTranslating, setIsTranslating] = useState(false);
   const [targetLanguage, setTargetLanguage] = useState('en');
 
-  useEffect(() => {
-    if (trips.length === 0) {
-      loadSampleData();
-    }
-    const newTripId = searchParams.get('newTrip');
-    if (newTripId) {
-      generateForNewTrip(newTripId);
-    }
-  }, []);
-
   const generateForNewTrip = async (tripId: string) => {
     setIsGenerating(true);
     try {
@@ -54,6 +44,16 @@ function DashboardContent() {
       setIsGenerating(false);
     }
   };
+
+  useEffect(() => {
+    if (trips.length === 0) {
+      loadSampleData();
+    }
+    const newTripId = searchParams.get('newTrip');
+    if (newTripId) {
+      generateForNewTrip(newTripId);
+    }
+  }, []);
 
   const handleTranslate = async (lang: string) => {
     setTargetLanguage(lang);
