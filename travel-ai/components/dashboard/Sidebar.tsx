@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useTravelStore } from '@/lib/store';
 import { Trip } from '@/lib/types';
+import GoogleSignIn from '@/components/auth/GoogleSignIn';
 import { TRAVEL_STYLES_META } from '@/lib/seed-data';
 
 interface SidebarProps {
@@ -130,17 +131,8 @@ export default function Sidebar({ onNewTrip }: SidebarProps) {
           </p>
         </div>
 
-        <div className="mt-3 flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-sm font-bold">
-            S
-          </div>
-          <div>
-            <p className="text-sm font-medium">Shiv</p>
-            <p className="text-xs text-slate-500">Premium Explorer</p>
-          </div>
-          <Link href="/" className="ml-auto btn-ghost p-1 text-slate-400 hover:text-white text-xs">
-            ←
-          </Link>
+        <div className="mt-4">
+          <GoogleSignIn />
         </div>
       </div>
     </aside>

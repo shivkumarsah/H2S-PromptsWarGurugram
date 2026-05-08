@@ -92,3 +92,34 @@ export async function searchRecommendations(
     { name: `Hidden Gem in ${destination}`, description: 'Off the beaten path experience', rating: 4.9, category: 'experience' },
   ].slice(0, limit);
 }
+
+// ================================================================
+// BigQuery — Event Logging
+// ================================================================
+export async function logTripToBigQuery(trip: Trip): Promise<void> {
+  if (!process.env.GOOGLE_CLOUD_PROJECT) return;
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const { BigQuery } = require('@google-cloud/bigquery');
+    const bigquery = new BigQuery({ projectId: process.env.GOOGLE_CLOUD_PROJECT });
+    const dataset = bigquery.dataset('travel_analytics');
+    const table = dataset.table('trip_events');
+
+    const row = {
+      timestamp: bigquery.datetime(new Date().toISOString()),
+      trip_id: trip.id,
+      user_id: trip.userId,
+      destination: trip.intent.destination,
+      budget: trip.intent.budget,
+    };
+
+    // Fire and forget
+    table.insert([row]).catch((err: Error) => {
+      logger.warn('BigQuery insert failed (non-critical)', { error: String(err) });
+    });
+    logger.info('Trip logged to BigQuery', { tripId: trip.id });
+  } catch (err) {
+    logger.warn('BigQuery setup failed (non-critical)', { error: String(err) });
+  }
+}
+

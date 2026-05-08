@@ -3,7 +3,7 @@ import { CreateTripRequest, Trip, TripIntent, ApiResponse } from '@/lib/types';
 import { parseNaturalLanguageIntent } from '@/lib/gemini';
 import { sanitizeString, sanitizeNumber, validateCreateTripRequest } from '@/lib/security';
 import { tripsDb } from '@/lib/firestore';
-import { logger } from '@/lib/google-services';
+import { logger, logTripToBigQuery } from '@/lib/google-services';
 import { SAMPLE_TRIPS } from '@/lib/seed-data';
 
 // Seed sample data into the store on first load
@@ -125,6 +125,9 @@ export async function POST(req: NextRequest) {
 
     // Publish event to Pub/Sub (fire and forget)
     publishTripCreatedEvent(trip).catch(() => {});
+
+    // Log event to BigQuery (fire and forget)
+    logTripToBigQuery(trip).catch(() => {});
 
     logger.info('Trip created', { tripId, destination: trip.intent.destination });
 

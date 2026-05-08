@@ -22,6 +22,9 @@ function DashboardContent() {
   const [chatOpen, setChatOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'itinerary' | 'overview'>('itinerary');
 
+  const [isTranslating, setIsTranslating] = useState(false);
+  const [targetLanguage, setTargetLanguage] = useState('en');
+
   useEffect(() => {
     if (trips.length === 0) {
       loadSampleData();
@@ -49,6 +52,32 @@ function DashboardContent() {
       toast.error('Using sample itinerary for demo');
     } finally {
       setIsGenerating(false);
+    }
+  };
+
+  const handleTranslate = async (lang: string) => {
+    setTargetLanguage(lang);
+    if (!activeTrip?.itinerary || lang === 'en') return;
+
+    setIsTranslating(true);
+    const toastId = toast.loading('Translating itinerary...');
+    try {
+      const res = await fetch('/api/itinerary/translate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tripId: activeTrip.id, targetLanguage: lang }),
+      });
+      const data = await res.json();
+      if (data.success && data.data) {
+        setItinerary(activeTrip.id, data.data);
+        toast.success('Translation complete!', { id: toastId });
+      } else {
+        throw new Error(data.error);
+      }
+    } catch (err) {
+      toast.error('Translation failed (demo mode limit)', { id: toastId });
+    } finally {
+      setIsTranslating(false);
     }
   };
 
@@ -107,6 +136,18 @@ function DashboardContent() {
                 >
                   🗺️ {mapView ? 'List View' : 'Map View'}
                 </button>
+                <select
+                  value={targetLanguage}
+                  onChange={(e) => handleTranslate(e.target.value)}
+                  disabled={isTranslating}
+                  className="bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm text-slate-300 outline-none focus:border-indigo-500/50"
+                  aria-label="Translate itinerary"
+                >
+                  <option value="en">English</option>
+                  <option value="es">Español</option>
+                  <option value="ja">日本語</option>
+                  <option value="fr">Français</option>
+                </select>
               </>
             )}
             <button
