@@ -5,7 +5,7 @@ test('Navigate to Home -> Enter Trip -> Wait for Dashboard to load', async ({ pa
   await page.goto('/');
   
   // Wait for the hero section to be visible
-  await expect(page.getByRole('heading', { name: /plan your perfect trip/i })).toBeVisible();
+  await expect(page.locator('h1')).toContainText('Plan your perfect trip');
 
   // Fill in the destination or natural language input
   const input = page.getByRole('textbox', { name: /describe your dream trip/i });
