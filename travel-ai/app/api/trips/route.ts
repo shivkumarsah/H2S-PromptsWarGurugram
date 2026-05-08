@@ -15,7 +15,8 @@ tripsDb.seed(SAMPLE_TRIPS);
 async function publishTripCreatedEvent(trip: Trip) {
   if (!process.env.PUBSUB_TOPIC || !process.env.GOOGLE_CLOUD_PROJECT) return;
   try {
-    const { PubSub } = await import('@google-cloud/pubsub');
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const { PubSub } = require('@google-cloud/pubsub');
     const pubsub = new PubSub({ projectId: process.env.GOOGLE_CLOUD_PROJECT });
     const topic = pubsub.topic(process.env.PUBSUB_TOPIC);
     const data = Buffer.from(JSON.stringify({
@@ -27,7 +28,6 @@ async function publishTripCreatedEvent(trip: Trip) {
     await topic.publishMessage({ data });
     logger.info('Published trip-created event to Pub/Sub', { tripId: trip.id });
   } catch (err) {
-    // Non-critical: log but don't fail the request
     logger.warn('Pub/Sub publish failed (non-critical)', { error: String(err) });
   }
 }
