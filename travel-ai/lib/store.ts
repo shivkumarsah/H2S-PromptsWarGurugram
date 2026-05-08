@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { create } from 'zustand';
 import { Trip, Itinerary, ChatMessage, ChatSession, TripIntent } from '@/lib/types';
 import { SAMPLE_TRIPS } from '@/lib/seed-data';

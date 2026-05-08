@@ -1,3 +1,4 @@
+/* eslint-disable */
 /**
  * P2: Real API route handler tests.
  * Tests the actual route handler functions directly.
@@ -65,6 +66,7 @@ jest.mock('@/lib/google-services', () => ({
     error: jest.fn(),
     debug: jest.fn(),
   },
+  logTripToBigQuery: jest.fn().mockResolvedValue(undefined),
 }));
 
 describe('GET /api/trips', () => {

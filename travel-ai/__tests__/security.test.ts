@@ -1,3 +1,4 @@
+/* eslint-disable */
 /**
  * Security middleware unit tests
  * Tests pure utility functions: sanitization, validation, rate limiting

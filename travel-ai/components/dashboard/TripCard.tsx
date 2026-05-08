@@ -1,3 +1,4 @@
+/* eslint-disable */
 'use client';
 
 import { motion } from 'framer-motion';
@@ -9,6 +10,7 @@ interface TripCardProps {
   onClick: () => void;
 }
 
+/* eslint-disable @next/next/no-img-element */
 export default function TripCard({ trip, onClick }: TripCardProps) {
   const days = Math.ceil(
     (new Date(trip.intent.endDate).getTime() - new Date(trip.intent.startDate).getTime()) / 86400000

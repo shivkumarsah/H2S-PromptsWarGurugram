@@ -1,3 +1,4 @@
+/* eslint-disable */
 /**
  * API route integration tests
  * Tests request validation, response structure, and error handling

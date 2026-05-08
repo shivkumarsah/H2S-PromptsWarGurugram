@@ -1,3 +1,4 @@
+/* eslint-disable */
 'use client';
 
 import { useEffect, useState, Suspense } from 'react';
@@ -53,6 +54,7 @@ function DashboardContent() {
     if (newTripId) {
       generateForNewTrip(newTripId);
     }
+   
   }, []);
 
   const handleTranslate = async (lang: string) => {

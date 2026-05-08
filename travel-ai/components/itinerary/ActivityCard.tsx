@@ -1,3 +1,4 @@
+ 
 'use client';
 
 import { useState } from 'react';
@@ -24,6 +25,7 @@ const TRANSPORT_ICONS: Record<string, string> = {
   walking: '🚶', taxi: '🚕', 'public-transit': '🚇', 'rental-car': '🚗', bike: '🚲', mixed: '🔄',
 };
 
+/* eslint-disable @next/next/no-img-element */
 export default function ActivityCard({ activity, isExpanded, onToggle }: ActivityCardProps) {
   const [showAlternatives, setShowAlternatives] = useState(false);
   const config = CATEGORY_CONFIG[activity.category] || { icon: '📍', color: 'text-slate-400', bg: 'bg-slate-400/10' };

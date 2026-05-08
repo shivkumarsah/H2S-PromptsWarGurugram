@@ -1,3 +1,4 @@
+ 
 import { GoogleGenerativeAI, GenerateContentResult } from '@google/generative-ai';
 import { TripIntent, Itinerary, ChatMessage } from './types';
 import { sanitizeString } from './security';

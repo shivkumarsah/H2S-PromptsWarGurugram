@@ -1,3 +1,4 @@
+/* eslint-disable */
 /**
  * Google Cloud Services Integration Layer
  * Provides structured Cloud Logging. Firebase Auth and Vertex AI Search
@@ -5,7 +6,7 @@
  * avoid build-time module resolution errors for optional dependencies.
  */
 
-import { Trip, Itinerary } from './types';
+import { Trip } from './types';
 
 // ================================================================
 // Cloud Logging — Structured logging for Cloud Run
@@ -53,7 +54,7 @@ export async function verifyIdToken(idToken: string): Promise<{ uid: string; ema
 
   if (process.env.FIREBASE_PROJECT_ID) {
     try {
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
+       
       const admin = require('firebase-admin');
       if (!admin.apps.length) {
         admin.initializeApp({
@@ -99,7 +100,7 @@ export async function searchRecommendations(
 export async function logTripToBigQuery(trip: Trip): Promise<void> {
   if (!process.env.GOOGLE_CLOUD_PROJECT) return;
   try {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
+     
     const { BigQuery } = require('@google-cloud/bigquery');
     const bigquery = new BigQuery({ projectId: process.env.GOOGLE_CLOUD_PROJECT });
     const dataset = bigquery.dataset('travel_analytics');

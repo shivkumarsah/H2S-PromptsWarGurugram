@@ -1,3 +1,4 @@
+ 
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -5,6 +6,7 @@ import { GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, User 
 import { auth } from '@/lib/firebase-client';
 import toast from 'react-hot-toast';
 
+/* eslint-disable @next/next/no-img-element */
 export default function GoogleSignIn() {
   const [user, setUser] = useState<User | null>(null);
   const [isInitializing, setIsInitializing] = useState(!!auth);
@@ -51,7 +53,7 @@ export default function GoogleSignIn() {
     return (
       <div className="flex items-center gap-3 bg-white/5 p-2 rounded-xl">
         {user.photoURL && (
-          // eslint-disable-next-line @next/next/no-img-element
+           
           <img src={user.photoURL} alt="Profile" className="w-8 h-8 rounded-full" />
         )}
         <div className="flex-1 min-w-0">
