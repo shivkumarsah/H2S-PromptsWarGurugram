@@ -1,0 +1,12 @@
+# Ignore node_modules - Cloud Build will npm install in the container
+travel-ai/node_modules/
+travel-ai/.next/
+travel-ai/.env*
+!travel-ai/.env.example
+
+# Git history
+.git/
+
+# System files
+.DS_Store
+*.log
