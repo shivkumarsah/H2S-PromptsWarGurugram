@@ -7,10 +7,8 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: 'maps.googleapis.com' },
     ],
   },
-  env: {
-    GEMINI_API_KEY: process.env.GEMINI_API_KEY || '',
-    MAPS_API_KEY: process.env.MAPS_API_KEY || '',
-  },
+  // NOTE: Do NOT expose GEMINI_API_KEY or MAPS_API_KEY here.
+  // Server-side env vars are accessed directly via process.env in API routes.
 };
 
 export default nextConfig;

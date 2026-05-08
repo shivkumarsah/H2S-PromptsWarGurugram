@@ -1,5 +1,6 @@
 import { GoogleGenerativeAI, GenerateContentResult } from '@google/generative-ai';
 import { TripIntent, Itinerary, ChatMessage } from './types';
+import { sanitizeString } from './security';
 
 const API_KEY = process.env.GEMINI_API_KEY || 'demo_mode';
 
@@ -48,9 +49,11 @@ export async function parseNaturalLanguageIntent(input: string): Promise<Partial
 
   try {
     const model = getGenAI().getGenerativeModel({ model: 'gemini-1.5-flash' });
+    // P2: Sanitize user input before interpolation (prompt injection guard)
+    const safeInput = sanitizeString(input, 500);
     const prompt = `Parse this travel request into structured JSON. Return ONLY valid JSON, no markdown.
 
-Request: "${input}"
+Request: "${safeInput}"
 
 Return this exact JSON structure:
 {
@@ -64,7 +67,7 @@ Return this exact JSON structure:
   "pace": "relaxed"|"moderate"|"intensive",
   "interests": ["string"],
   "dietaryRestrictions": [],
-  "naturalLanguageInput": "${input}"
+  "naturalLanguageInput": "the original user input"
 }`;
 
     const result: GenerateContentResult = await model.generateContent(prompt);
@@ -123,6 +126,7 @@ export async function generateItinerary(intent: TripIntent): Promise<Itinerary> 
   if (API_KEY === 'demo_mode') {
     return generateDemoItinerary(intent);
   }
+
 
   try {
     const model = getGenAI().getGenerativeModel({
@@ -193,7 +197,7 @@ Current Itinerary Summary:
 Conversation History:
 ${conversationHistory}
 
-User Request: "${message}"
+User Request: "${sanitizeString(message, 1000)}"
 
 Respond helpfully. If they want to modify the itinerary, explain what you'll change and why.
 If asked to make changes, also return a JSON block with the specific changes.
@@ -260,9 +264,9 @@ function chatFallback(message: string, itinerary: Itinerary): { reply: string; u
   };
 }
 
-function generateDemoItinerary(intent: TripIntent): Itinerary {
-  // Return a simplified demo itinerary structure
-  const { TOKYO_SAMPLE_TRIP } = require('./seed-data');
+async function generateDemoItinerary(intent: TripIntent): Promise<Itinerary> {
+  // P3: Lazy-load seed data only in demo mode
+  const { TOKYO_SAMPLE_TRIP } = await import('./seed-data');
   return {
     ...TOKYO_SAMPLE_TRIP.itinerary,
     id: `itin_${Date.now()}`,
