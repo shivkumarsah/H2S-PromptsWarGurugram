@@ -22,7 +22,11 @@ export default function Sidebar({ onNewTrip }: SidebarProps) {
   }[status]);
 
   return (
-    <aside className="sidebar">
+    <aside
+      className="sidebar"
+      aria-label="Trip navigation sidebar"
+      role="complementary"
+    >
       {/* Logo */}
       <div className="flex items-center gap-3 px-5 py-5 border-b border-white/5">
         <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-sm">
